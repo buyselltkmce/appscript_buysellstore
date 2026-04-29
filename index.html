@@ -662,7 +662,7 @@ if (shareBtn) {
     const originalText = shareBtn.innerHTML;
     shareBtn.innerHTML = 'Preparing...';
     
-const baseUrl = "https://script.google.com/macros/s/AKfycbzrzAnNUnnf97pwJDoKrvWSJB3OP9ZpaUgytgQ6uzo/exec";
+const baseUrl = "https://buysellstore.me";
 const grpUrl = "https://chat.whatsapp.com/BaQ6tQE2t594tj3izuVSZp"
 const shareUrl = baseUrl + '?product=' + encodeURIComponent(product.productName);
 // Force original high-resolution quality (=s0) for sharing
@@ -804,10 +804,10 @@ if (waBtn) {
     if (phone) {
       let cleanPhone = String(phone).replace(/\D/g, '');
       if (cleanPhone.length === 10) {
-        cleanPhone = '91' + cleanPhone;
-      }
-      const baseUrl = "https://script.google.com/macros/s/AKfycbzrzAnNUnnf97pwJDoKrvWSJB3OP9ZpaUgytgQ6uzo/exec";
-      const productLink = baseUrl + '?product=' + encodeURIComponent(product.productName);
+  cleanPhone = '91' + cleanPhone;
+}
+const baseUrl = "https://buysellstore.me";
+const productLink = baseUrl + '?product=' + encodeURIComponent(product.productName);
       const message = encodeURIComponent(`Hi, I'm interested in ${product.productName} which I saw for ₹${product.pricePerQty} at BuySell TKMCE. Is it still available?\n${productLink}`);
       waBtn.href = `https://wa.me/${cleanPhone}?text=${message}`;
       waBtn.onclick = null;
@@ -825,10 +825,12 @@ if (waBtn) {
 
 /* --- Contact Us (Admin) Button Logic --- */
 const adminBtn = document.getElementById('m_admin_btn');
+/* --- Contact Us (Admin) Button Logic --- */
+const adminBtn = document.getElementById('m_admin_btn');
 if (adminBtn) {
-  const adminPhone = "918921500620";
-  const appBaseUrl = "https://script.google.com/macros/s/AKfycbzrzAnNUnnf97pwJDoKrvWSJB3OP9ZpaUgytgQ6uzo/exec";
-  const pLink = appBaseUrl + '?product=' + encodeURIComponent(product.productName);
+const adminPhone = "918921500620";
+const appBaseUrl = "https://buysellstore.me";
+const pLink = appBaseUrl + '?product=' + encodeURIComponent(product.productName);
   
   const adminMsg = encodeURIComponent(
     `Hi, I need help regarding ${product.productName}\n
