@@ -937,10 +937,13 @@ async function shareCommunity() {
   const shareBtn = document.getElementById('comm-share-btn');
   const originalHtml = shareBtn.innerHTML;
   
+  // Use the clean URL for sharing
+  const shareUrl = window.location.origin + "/join-community";
+  
   const shareData = {
     title: 'BuySell TKMCE Community',
     text: 'Join your batch community to get daily product updates on BuySell TKMCE! Happy Buying & Selling! 🛍️💰',
-    url: window.location.href.split('?')[0] // Trims off any product parameters
+    url: shareUrl 
   };
   
   if (navigator.share) {
@@ -1158,6 +1161,16 @@ const checkCards = setInterval(() => {
     }
   }
 }, 500);
+
+// --- Auto-open Community Linktree if accessed via share link ---
+window.addEventListener('DOMContentLoaded', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const path = window.location.pathname.replace(/\/$/, ''); // Normalizes any trailing slashes
+  
+  if (urlParams.get('action') === 'community' || path === '/join-community') {
+    openCommModal();
+  }
+});
 
 </script>
 </body>
