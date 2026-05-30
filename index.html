@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,9 +23,9 @@
 
   <style>
     :root{
---blue-600: #2881ff; /* Your custom brand blue */
---blue-700: #1c5fcc; /* Slightly darker shade for crisp text and hover effects */
---blue-050: #eef5ff; /* Soft, faded background for category pills */
+      --blue-600: #2881ff; /* Your custom brand blue */
+      --blue-700: #1c5fcc; /* Slightly darker shade for crisp text and hover effects */
+      --blue-050: #eef5ff; /* Soft, faded background for category pills */
       --text-900:#0f172a;
       --text-600:#475569;
       --border:#e2e8f0;
@@ -160,6 +159,7 @@ min-height:280px;
 padding:14px;overflow:auto; /* scrollable text/details */
 flex: 1;
 }
+
 .zoom-surface {
 position: relative;
 background: #f7f7f7; 
@@ -183,13 +183,6 @@ transform-origin: center center;
 .zoom-help{
 padding:8px 12px;color:var(--text-600);font-size:12px;border-top:1px solid var(--border);
 background:#f7f7f7; 
-}
-
-/* Hover-zoom is Desktop ONLY */
-@media (hover: hover) and (pointer: fine) {
-  .zoom-surface:hover img {
-    transform: scale(2.5);
-  }
 }
 
 /* Hover-zoom is Desktop ONLY */
@@ -232,6 +225,54 @@ background:#f7f7f7;
     display: none; 
   }
 }
+
+/* Community Linktree Modal */
+#comm-modal { position:fixed; inset:0; z-index:10001; display:none; align-items:center; justify-content:center; }
+.comm-modal-card {
+  position:relative; width:90%; max-width:400px; background:#fff; border-radius:24px;
+  padding:32px 24px; box-shadow:0 25px 50px rgba(15,23,42,0.25); text-align:center;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes popIn { 0% { transform: scale(0.95); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+.comm-link {
+  display: flex; align-items: center; justify-content: space-between;
+  background: #f8fafc; border: 2px solid var(--border); border-radius: 16px;
+  padding: 16px 20px; margin-bottom: 12px; color: var(--text-900); font-weight: 700; font-size: 16px;
+  text-decoration: none; transition: all 0.2s ease; cursor: pointer;
+}
+.comm-link:hover {
+  background: #f0fdf4; border-color: #22c55e; color: #15803d; transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(34,197,94,0.12);
+}
+.comm-link:active { transform: translateY(0); }
+.wa-icon { fill: #25D366; transition: all 0.2s; }
+.comm-link:hover .wa-icon { transform: scale(1.15); }
+
+/* Top Action Buttons (Share & Close) */
+.comm-action-btn {
+  border: 1px solid var(--border); background: #ffffff; color: var(--text-900);
+  width: 36px; height: 36px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 4px 12px rgba(15,23,42,.06); transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.comm-action-btn:hover { background: #f8fafc; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(15,23,42,.12); color: var(--blue-600); border-color: var(--blue-600); }
+
+/* Community Floating Button */
+.comm-fab {
+  position: fixed; bottom: 24px; left: 24px; z-index: 1000;
+  background-color: #ffffff; color: var(--text-900); padding: 0 20px; height: 56px;
+  border-radius: 28px; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px;
+  text-decoration: none; cursor: pointer; box-shadow: 0 8px 24px rgba(15,23,42,0.12);
+  border: 1px solid var(--border); transition: all 0.2s;
+}
+.comm-fab:hover { box-shadow: 0 12px 32px rgba(15,23,42,0.2); transform: translateY(-2px); border-color:var(--blue-600); }
+
+/* Mobile balancing for both FABs */
+@media (max-width: 520px) {
+  .comm-fab { padding: 0 14px; font-size: 13px; left: 12px; bottom: 16px; height: 48px; gap: 6px; }
+  #sell-fab { padding: 0 14px !important; font-size: 13px !important; right: 12px !important; bottom: 16px !important; height: 48px !important; gap: 6px !important; }
+}
+
 /* Loading Progress Bar */
     #loading {
       display: flex;
@@ -394,12 +435,96 @@ background:#f7f7f7;
     <!-- /Modal -->
   </div>
 
-<a href="/sell-item" target="_blank" style="position: fixed; bottom: 24px; right: 24px; z-index: 1000; background-color: #FFC200; color: #000000; padding: 0 20px; height: 56px; border-radius: 28px; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; text-decoration: none;cursor: pointer;">
+<!-- Join Community Floating Button -->
+<button class="comm-fab" onclick="openCommModal()">
+  <span style="font-size:18px; line-height: 1;">👋</span> Join Community
+</button>
+
+<!-- Sell Item Floating Button (Updated with ID and hover styling) -->
+<a id="sell-fab" href="/sell-item" target="_blank" style="position: fixed; bottom: 24px; right: 24px; z-index: 1000; background-color: #FFC200; color: #000000; padding: 0 20px; height: 56px; border-radius: 28px; display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 15px; text-decoration: none; cursor: pointer; box-shadow: 0 8px 24px rgba(255, 194, 0, 0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
 <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
 </svg>
 Sell Item
 </a>
+
+<!-- Community Linktree Modal -->
+<div id="comm-modal">
+  <div class="modal-backdrop" onclick="closeCommModal()"></div>
+  <div class="comm-modal-card">
+    
+    <!-- Share and Close Buttons Top Right -->
+    <div style="position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; z-index: 10;">
+      <button id="comm-share-btn" class="comm-action-btn" onclick="shareCommunity()" aria-label="Share Community">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+        </svg>
+      </button>
+      <button class="comm-action-btn" onclick="closeCommModal()" aria-label="Close" style="font-size: 16px;">✕</button>
+    </div>
+    
+    <div style="width:56px; height:56px; background:var(--blue-050); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; color:var(--blue-600);">
+      <svg width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/>
+      </svg>
+    </div>
+    <h2 style="margin:0 0 8px; font-size:22px; color:var(--text-900); font-weight:800;">Join Your Community</h2>
+    <p style="margin:0 0 24px; color:var(--text-600); font-size:14px; line-height: 1.5;">Join your batch community to get daily product updates.<br>Happy Buying & Selling! 🛍️💰</p>
+    
+    <div style="display:flex; flex-direction:column;">
+      <a href="https://chat.whatsapp.com/CqaF54txaW8FPvYwCgpbfp" target="_blank" class="comm-link">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:20px; line-height:1;">🎓</span> <span>2027 Batch</span>
+        </div>
+        <svg class="wa-icon" width="22" height="22" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+      </a>
+      <a href="https://chat.whatsapp.com/ILNRPUJ4C3gB1znFLZZuCo" target="_blank" class="comm-link">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:20px; line-height:1;">🎓</span> <span>2028 Batch</span>
+        </div>
+        <svg class="wa-icon" width="22" height="22" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+      </a>
+      <a href="https://chat.whatsapp.com/LYjWwY4mkUDFvoXA0S5DC2" target="_blank" class="comm-link">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:20px; line-height:1;">🎓</span> <span>2029 Batch</span>
+        </div>
+        <svg class="wa-icon" width="22" height="22" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+      </a>
+      <a href="https://chat.whatsapp.com/Dd8S6wAM3Cq7GFM2dcFXgi" target="_blank" class="comm-link">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:20px; line-height:1;">🎓</span> <span>2030 Batch</span>
+        </div>
+        <svg class="wa-icon" width="22" height="22" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+      </a>
+
+      <!-- Premium Instagram Link Addition -->
+      <a href="https://instagram.com/buysell.tkmce" target="_blank" class="comm-link" style="margin-top: 8px; margin-bottom: 0;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <!-- Custom gradient SVG icon -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="ig-grad" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#f09433"/>
+                <stop offset="0.25" stop-color="#e6683c"/>
+                <stop offset="0.5" stop-color="#dc2743"/>
+                <stop offset="0.75" stop-color="#cc2366"/>
+                <stop offset="1" stop-color="#bc1888"/>
+              </linearGradient>
+            </defs>
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig-grad)" stroke-width="2"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="url(#ig-grad)" stroke-width="2"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#ig-grad)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div style="text-align: left; display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size:16px; color:var(--text-900); font-weight: 700; line-height: 1;">Follow on Instagram</span>
+            <span style="font-size:12px; color:var(--text-600); font-weight: 600; line-height: 1.2;">@buysell.tkmce for exclusive offers</span>
+          </div>
+        </div>
+      </a>
+      <!-- End Instagram Link -->
+    </div>
+  </div>
+</div>
 
 <script>
     let PRODUCTS = [];
@@ -627,7 +752,7 @@ mcat.textContent = product.category || 'General';
   mop.textContent = product.onlinePricePerQty ? `₹${product.onlinePricePerQty}` : '';
   
   mreason.textContent = product.reasonForSale || 'Not specified';
-mmeta.textContent = product.anonymous ? 'Seller: Anonymous' : (product.sellerName ? `Seller: ${product.sellerName}` : '');
+mmeta.textContent = ''; // Hide seller name completely
 
 // Format and display the Posted Date
 if (product.timestamp) {
@@ -748,93 +873,39 @@ console.log("Could not fetch image for sharing, falling back to text.", e);
     translateX = 0;
     translateY = 0;
   }
-  // ===== YOUR EXISTING CODE ABOVE =====
 
 // Populate data
 mname.textContent = product.productName || '';
 mcat.textContent = product.category || 'General';
 mdesc.textContent = product.description || 'No description provided.';
 
-// 👇👇 ADD YOUR WHATSAPP CODE HERE 👇👇
 
-/* --- WhatsApp Connect Button FIX --- */
-// const waBtn = document.getElementById('m_wa_btn');
-
-// if (waBtn) {
-//   const phone = product.phoneNumber || product.whatsappNumber || '';
-  
-//   if (phone) {
-//     const message = encodeURIComponent(
-//       `Hi, I'm interested in "${product.productName}" from BuySell TKMCE.`
-//     );
-
-//     waBtn.href = `https://wa.me/${phone}?text=${message}`;
-//   } else {
-//     waBtn.href = "#";
-//     waBtn.onclick = function(e) {
-//       e.preventDefault();
-//       alert("Seller phone number not available");
-//     };
-//   }
-// }
-/* --- WhatsApp Connect Button (Anonymous Logic) --- */
-// ithanu 2nd
+/* --- WhatsApp Connect Button (Admin Redirect) --- */
 const waBtn = document.getElementById('m_wa_btn');
 if (waBtn) {
   if (product.isSold) {
-      waBtn.style.backgroundColor = '#94a3b8'; 
-      waBtn.style.boxShadow = 'none'; /* Removes the glowing green shadow */
-      waBtn.innerHTML = 'Item Sold Out';
-      waBtn.href = '#';
-      waBtn.onclick = function(e) { e.preventDefault(); };
-    } else {
-      waBtn.style.backgroundColor = '#25D366'; 
-      waBtn.style.boxShadow = '0 4px 10px rgba(37,211,102,.2)'; /* Restores the green glow */ 
-    waBtn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg> Chat with Seller`;
+    waBtn.style.backgroundColor = '#94a3b8';
+    waBtn.style.boxShadow = 'none';
+    waBtn.innerHTML = 'Item Sold Out';
+    waBtn.href = '#';
+    waBtn.onclick = function(e) { e.preventDefault(); };
+  } else {
+    waBtn.style.backgroundColor = '#25D366';
+    waBtn.style.boxShadow = '0 4px 10px rgba(37,211,102,.2)';
     
-    // 👉 YOUR NUMBER (for anonymous sellers)
-    const ADMIN_NUMBER = "918921500620"; // 🔴 CHANGE THIS TO YOUR NUMBER
-    // 👉 Decide which number to use
-    let phone = "";
-    if (product.anonymous === true) {
-      phone = ADMIN_NUMBER; // send to you
-    } else {
-      phone = product.phoneNumber || product.whatsappNumber || "";
-    }
-    if (phone) {
-      let cleanPhone = String(phone).replace(/\D/g, '');
-      if (cleanPhone.length === 10) {
-  cleanPhone = '91' + cleanPhone;
-}
-const baseUrl = "https://buysellstore.me";
-const productLink = baseUrl + '?product=' + encodeURIComponent(product.productName);
-      const message = encodeURIComponent(`Hi, I'm interested in ${product.productName} which I saw for ₹${product.pricePerQty} at BuySell TKMCE. Is it still available?\n${productLink}`);
-      waBtn.href = `https://wa.me/${cleanPhone}?text=${message}`;
-      waBtn.onclick = null;
-    } else {
-      waBtn.href = "#";
-      waBtn.onclick = function(e){
-        e.preventDefault();
-        alert("Phone number not available");
-      };
-    }
+    // Change button text to "Interested"
+    waBtn.innerHTML = `<svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg> Interested`;
+    
+    // Always route to admin
+    const ADMIN_NUMBER = "918921500620";
+    const baseUrl = "https://buysellstore.me";
+    const productLink = baseUrl + '?product=' + encodeURIComponent(product.productName);
+    
+    const message = encodeURIComponent(`Hi, I'm interested in ${product.productName} which I saw for ₹${product.pricePerQty} at BuySell TKMCE. Is it still available?\n${productLink}`);
+    
+    waBtn.href = `https://wa.me/${ADMIN_NUMBER}?text=${message}`;
+    waBtn.onclick = null;
   }
-}
-
-// 👆👆 END HERE 👆👆
-/* --- Contact Us (Admin) Button Logic --- */
-const adminBtn = document.getElementById('m_admin_btn');
-if (adminBtn) {
-const adminPhone = "918921500620";
-const appBaseUrl = "https://buysellstore.me";
-const pLink = appBaseUrl + '?product=' + encodeURIComponent(product.productName);
-  
-  const adminMsg = encodeURIComponent(
-    `Hi, I need help regarding ${product.productName}\n
-${pLink}.`
-  );
-  
-  adminBtn.href = `https://wa.me/${adminPhone}?text=${adminMsg}`;
 }
 
 // ===== THIS SHOULD REMAIN LAST =====
@@ -850,8 +921,48 @@ function closeModal(){
   document.body.style.overflow = '';
 }
 
+// --- Community Modal Logic ---
+function openCommModal() {
+  document.getElementById('comm-modal').style.display = 'flex';
+  document.body.style.overflow = 'hidden'; // Stop background scroll
+}
+
+function closeCommModal() {
+  document.getElementById('comm-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+// Logic to Share the Community via native Share sheet
+async function shareCommunity() {
+  const shareBtn = document.getElementById('comm-share-btn');
+  const originalHtml = shareBtn.innerHTML;
+  
+  const shareData = {
+    title: 'BuySell TKMCE Community',
+    text: 'Join your batch community to get daily product updates on BuySell TKMCE! Happy Buying & Selling! 🛍️💰',
+    url: window.location.href.split('?')[0] // Trims off any product parameters
+  };
+  
+  if (navigator.share) {
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.log('User cancelled share or error:', err);
+    }
+  } else {
+    // Fallback if browser doesn't support native sharing (mostly desktop)
+    navigator.clipboard.writeText(`${shareData.text}\n${shareData.url}`).then(() => {
+      shareBtn.innerHTML = '<span style="font-size:14px; color:#25D366; font-weight:bold;">✓</span>';
+      setTimeout(() => { shareBtn.innerHTML = originalHtml; }, 2000);
+    });
+  }
+}
+
 document.addEventListener('keydown', function(e){
-  if (e.key === 'Escape') closeModal();
+  if (e.key === 'Escape') {
+    closeModal();
+    closeCommModal();
+  }
 });
 
 // --- Amazon Hover-to-Zoom Mouse Tracking ---
@@ -960,6 +1071,7 @@ surface.addEventListener('touchend', function(e) {
     lastTouchY = e.touches[0].clientY;
   }
 });
+
     // Simulated Progress Animation
     let loadingInterval;
     let currentProgress = 0;
