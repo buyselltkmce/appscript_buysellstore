@@ -320,11 +320,6 @@ background:#f7f7f7;
 
 <div class="page" style="margin-top: 16px;">
 
-    <!-- <div class="brandbar">
-      <div><strong>Explore</strong> the latest products added by students</div>
-      <div class="muted">Cards are uniform — detailed view opens in a modal with scroll</div>
-    </div> -->
-
     <div class="toolbar sticky-search">
   <input id="q" class="search" type="search" placeholder="Search by product name, category…" oninput="render()">
   
@@ -788,7 +783,7 @@ if (shareBtn) {
     shareBtn.innerHTML = 'Preparing...';
     
 const baseUrl = "https://buysellstore.me";
-const grpUrl = "https://chat.whatsapp.com/BaQ6tQE2t594tj3izuVSZp"
+const grpUrl = "https://buysellstore.me/join-community"
 const shareUrl = baseUrl + '?product=' + encodeURIComponent(product.productName);
 // Force original high-resolution quality (=s0) for sharing
 const { fullCdn, fullUc } = getFullResUrls(product);
@@ -937,8 +932,9 @@ async function shareCommunity() {
   const shareBtn = document.getElementById('comm-share-btn');
   const originalHtml = shareBtn.innerHTML;
   
-  // Use the clean URL for sharing
-  const shareUrl = window.location.origin + "/join-community";
+  // Attach "?action=community" to the end of the URL
+  const baseUrl = window.location.href.split('?')[0];
+  const shareUrl = baseUrl + "?action=community";
   
   const shareData = {
     title: 'BuySell TKMCE Community',
